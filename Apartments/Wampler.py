@@ -1,6 +1,7 @@
 from bs4 import BeautifulSoup
 import re
 import requests
+import Numpy as np
 
 def get_wampler(url):
 
@@ -70,12 +71,14 @@ def get_wampler(url):
         if available:
             availability = '2024-08'
             if lookup['Rent:'][0].isalpha():
-                price = 'Not published'
+                # use np.nan in Numpy to represent unavailable price
+                price = np.nan
             else:
                 price = float(lookup['Rent:'].replace('$', '').replace(',', '').split('-')[-1].strip('/mo'))
         else:
             available_date = None
-            price = 0
+            # use np.nan in Numpy to represent unavailable price
+            price = np.nan
             continue
         Dorms.append([address, price, bedroom, bathroom, link, availability, name, is_studio])
     return Dorms

@@ -1,3 +1,4 @@
+import numpy as np
 from bs4 import BeautifulSoup
 import re
 import requests
@@ -64,7 +65,8 @@ def get_MHM(url):
                 is_studio = True
                 if item[-7:] == 'LEASED!':
                     availability = False
-                    price = 'Not Available'
+                    # use np.nan in Numpy to represent unavailable price
+                    price = np.nan
                 
             #other format is 2 Bed/2 Bath: 2024-2025  LEASED!
             else:
@@ -76,7 +78,8 @@ def get_MHM(url):
                 #There are lots of typo on mhmproperties website
                 if last_letters == 'LEASED!' or last_letters == 'LSESED!' or last_letters == 'LEASED':
                     availability = False
-                    price = 'Not Available'
+                    #use np.nan in Numpy to represent unavailable price
+                    price = np.nan
                 
                 else:
                     availability = '2024-2025'

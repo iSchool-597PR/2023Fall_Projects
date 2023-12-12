@@ -1,3 +1,4 @@
+import numpy as np
 from bs4 import BeautifulSoup
 import re
 import requests
@@ -40,7 +41,6 @@ def get_ugroup(url):
         []
     """
 
-
     session = requests.session()
     req_header = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',}
     name = 'Ugroup'
@@ -54,6 +54,7 @@ def get_ugroup(url):
         if not a.has_attr('href'):
             continue
         link = a['href']
+        #Open the specific link for information of each apartment
         res = session.get(link,headers = req_header).text
         soup = BeautifulSoup(res, 'html.parser')
         #Some links on the website is invalid, eg. https://ugroupcu.com/property-details/104-e-armory-immediate-move-in-and-january-2024
@@ -63,6 +64,7 @@ def get_ugroup(url):
         if soup.find('div', class_='prop_detil_rgt') is None:
             continue   
         kinds = soup.find_all('div', class_='tab-content_in_wrapp tab-cntnt_wrap_btm')
+        #kinds include more details about the apartment
         for kind in kinds:
             lookup = {}
             for li in kind.find('div', class_='tab-content_in_rgt').find_all('li'):
@@ -81,7 +83,8 @@ def get_ugroup(url):
                     try :
                         bedroom = int(bedrooms_text[0])
                     except ValueError:
-                        bedroom = 'Not published'
+                        # use np.nan for not published bedroom
+                        bedroom = np.nan
         
             Dorms.append([address, price, bedroom, bathroom, link, availability, name, is_studio])
     return Dorms
