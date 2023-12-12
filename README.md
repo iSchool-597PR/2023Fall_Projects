@@ -46,7 +46,7 @@ This project utilizes several Python packages to perform web scraping, data anal
 
 5. **Matplotlib:**
    - *Description:* Matplotlib is a versatile data visualization library in Python, providing functionalities for creating static plots and charts.
-   - *Role in Project:* Matplotlib is used to generate static visualizations, such as apartment pricing trends and the apartment ranking table.
+   - *Role in Project:* Matplotlib is used to generate static visualizations, including the display of nodes from OpenStreetMap data, providing insights into the street network structure.
 
 6. **Contextily:**
    - *Description:* Contextily is a library that facilitates the integration of basemaps into Matplotlib plots.
