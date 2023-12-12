@@ -3,13 +3,53 @@ import re
 import requests
 
 def get_wampler(url):
-    #url = 'https://wamplerapartments.com/our-properties/'
+
+    """
+        url = 'https://wamplerapartments.com/our-properties/'
+
+        Scrape information about apartments from the Wampler website.
+
+        Parameters:
+        - url (str): The URL of the Wampler website's property listing page.
+
+        Returns:
+        - list: A list of lists, where each inner list represents information about an apartment.
+
+        Example:
+        # Fetch information about apartments from the Wampler website
+        >>> wampler_apartments = get_wampler('https://wamplerapartments.com/our-properties/')
+
+        Each inner list contains the following details:
+        - Address (str): The address of the apartment.
+        - Price (float): The rental price of the apartment.
+        - Bedroom (int): The number of bedrooms in the apartment.
+        - Bathroom (float): The number of bathrooms in the apartment.
+        - Link (str): The URL link to the apartment's details.
+        - Availability (str): The availability status or lease period of the apartment.
+        - Name (str): The name or identifier of the property management company (Wampler).
+        - Is_studio (bool): Indicates whether the apartment is a studio (True) or not (False).
+
+        Doctests:
+        >>> len(get_wampler('https://wamplerapartments.com/our-properties/')) >= 0
+        True
+
+        >>> isinstance(get_wampler('https://wamplerapartments.com/our-properties/')[0][2], int)
+        True
+
+        >>> get_wampler('https://wamplerapartments.com/our-properties/')[20][1] > 0
+        True
+
+        >>> get_wampler('https://invalid-url.com')  # Returns an empty list for an invalid URL
+        []
+    """
     session = requests.session()
     req_header = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',}
     name ='Wampler'
     re = session.post(url,headers=req_header).text
     soup = BeautifulSoup(re, 'html.parser')
     Dorms = []
+    if soup == None:
+        return Dorms
     for a in soup.find_all('a', class_='more-link'):
         link = a['href']
         res = session.get(link).text

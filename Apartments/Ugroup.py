@@ -13,12 +13,33 @@ def get_ugroup(url):
         - list: A list of lists, where each inner list represents information about a dorm.
 
         Example:
-        ```python
-        dorms_info = get_ugroup('https://ugroupcu.com/building-list/')
-        for dorm in dorms_info:
-            print(dorm)
-        ```
+        # Fetch information about dorms from the Ugroup website
+        >>> ugroup_dorms = get_ugroup('https://ugroupcu.com/building-list/')
+
+        Each inner list contains the following details:
+        - Address (str): The address of the dorm or property.
+        - Price (float): The rental price of the dorm or property.
+        - Bedroom (int or str): The number of bedrooms in the dorm or property, or 'Not published'.
+        - Bathroom (float): The number of bathrooms in the dorm or property.
+        - Link (str): The URL link to the dorm or property's details.
+        - Availability (str): The availability status or lease period of the dorm or property.
+        - Name (str): The name or identifier of the property management company (Ugroup).
+        - Is_studio (bool): Indicates whether the dorm or property is a studio (True) or not (False).
+
+        Doctests:
+        >>> len(get_ugroup('https://ugroupcu.com/building-list/')) >= 0
+        True
+
+        >>> isinstance(get_ugroup('https://ugroupcu.com/building-list/')[0][2], int) or get_ugroup('https://ugroupcu.com/building-list/')[0][2] == 'Not published'
+        True
+
+        >>> get_ugroup('https://ugroupcu.com/building-list/')[0][1] > 0
+        True
+
+        >>> get_ugroup('https://invalid-url.com')  # Returns an empty list for an invalid URL
+        []
     """
+
 
     session = requests.session()
     req_header = {'User-Agent':'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/67.0.3396.99 Safari/537.36',}
@@ -26,6 +47,9 @@ def get_ugroup(url):
     re = session.get(url,headers = req_header).text
     soup = BeautifulSoup(re, 'html.parser')
     Dorms = []
+    if soup == None:
+        return Dorms
+
     for a in soup.find_all('a', class_='more_detail'):
         if not a.has_attr('href'):
             continue

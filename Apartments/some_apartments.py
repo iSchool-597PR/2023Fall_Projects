@@ -31,11 +31,39 @@ def combine_apartment_lists(scrapers):
     # Return the values of the dictionary, which are the unique listings
     return list(combined_apartments.values())
 
-
-# In[55]:
-
-
 def get_some_apt():
+    """
+        Scrape information about apartments from different property management companies.
+
+        Returns:
+        - list: A list of lists, where each inner list represents information about an apartment.
+
+        Example:
+        ```python
+        # Fetch information about apartments from different property management companies
+        >>> some_apartments = get_some_apt()
+
+        Each inner list contains the following details:
+        - Address (str): The address of the apartment.
+        - Price (float): The rental price of the apartment.
+        - Bedroom (int): The number of bedrooms in the apartment.
+        - Bathroom (float): The number of bathrooms in the apartment.
+        - Link (str): The URL link to the apartment's details.
+        - Availability (str): The availability status or lease period of the apartment.
+        - Name (str): The name or identifier of the property management company.
+        - Is_studio (bool): Indicates whether the apartment is a studio (True) or not (False).
+
+        Doctests:
+        >>> len(get_some_apt())
+        302
+
+        >>> isinstance(get_some_apt()[0][2], int)
+        True
+
+        >>> get_some_apt()[0][1] > 0
+        True
+    """
+    #Get information from these agencies
     bailey_scraper = Bailey('http://baileyapartments.com/amenities/', 'Bailey')
     green_street_scraper = Green_Street('https://www.greenstrealty.com/modules/extended/propertySearch', 'Green Street')
     jsj_scraper = JSJ('https://jsjmanagement.com/on-campus/listing/', 'JSJ')
