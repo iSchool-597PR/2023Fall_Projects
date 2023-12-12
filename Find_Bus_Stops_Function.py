@@ -167,3 +167,17 @@ def bus_stops_searcher(address, distance=500):
     bus_map = find_nearby_bus_stops(location, distance = 500)
     return bus_map
 
+def test_bus_stops_searcher():
+    """
+    Test the bus_stops_searcher function.
+    """
+    # Mocking an address near UIUC for testing
+    test_address = "501 E. Healey, Champaign"
+
+    # Test with a valid address and default distance
+    bus_map = bus_stops_searcher(test_address)
+    assert isinstance(bus_map, folium.Map)
+
+    # Test with a valid address and a specified distance
+    bus_map_custom_distance = bus_stops_searcher(test_address, distance=700)
+    assert isinstance(bus_map_custom_distance, folium.Map)
